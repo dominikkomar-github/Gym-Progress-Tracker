@@ -1,6 +1,6 @@
 from connect import *
 from user_management import register_user, login_user
-from workouts import add_workout, view_workouts
+from workouts import add_workout, view_workouts, delete_workout
 
 def main():
     """Manages the main menu of the Gym Progress App."""
@@ -43,8 +43,14 @@ def main():
 
                     elif sub_choice == '2':
                         add_workout(conn, logged_in_user)  # Add workout
-
+                        
                     elif sub_choice == '3':
+                        add_workout(conn, logged_in_user)  # Update workout
+                    
+                    elif sub_choice == '4':
+                        delete_workout(conn, logged_in_user)  # Delete workout
+
+                    elif sub_choice == '5':
                         print("Logged out successfully!")
                         break  # Exit inner loop (logout)
 

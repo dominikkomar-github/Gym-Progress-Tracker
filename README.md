@@ -1,25 +1,51 @@
-This is a gym tracking application. It is used to keep track of your gym progress, you can input the exercise name, the reps, and the weight used. 
-
-Before you can add anything, you need to make an account or login as prompted. Once you're logged in, all the data from the workouts and all the changes to your data will be saved ONLY for your account. 
-
-There is no "I forgot the password" solution as it's only using SQLITE so... don't forget your login/password.
-
-Features:
-
-- Register
-- Login
-- Add a workout
-- View Workouts
-- Update Workouts
-- Delete Workouts
-
-Password Hashing:
-
-To make it seem secure even when someone has access to the database file, the password is hashed using "bcrypt".
+# Gym Progress Tracker - Python & SQLite Fitness App
 
 
-TO-DO:
+This is a Python application designed to help you track your gym progress and visualize your workout achievements. It utilizes SQLite for local data storage and prioritizes user privacy with secure password hashing using bcrypt.
+Features
 
-- Make a GUI
-- Possibly host the database online so it's not local
-- Make it run from a single .exe file once GUI is implemented
+    User Management:
+        - Register new accounts
+        - Login to access personal workout data
+        
+    Workout Management:
+        - Add workouts with exercise names, repetitions, and weights
+        - View your complete workout history
+        - (Future) Update and delete existing workouts (planned for future implementation)
+        
+    Security:
+        - Strong password hashing with bcrypt for user protection
+
+# Getting Started
+
+Installation
+
+    Ensure you have Python 3 and pip (the package manager) installed on your system. You can find download instructions at https://www.python.org/downloads/.
+
+Dependencies
+
+    Install the required Python package bcrypt using pip:
+    
+    pip install bcrypt
+
+
+Use code with caution.
+Run the Application
+
+    -Download or clone the repository.
+    
+    Navigate to the project directory in your terminal.
+    
+    Run the main script using python main.py (or python3 main.py if necessary).
+
+Usage
+
+The application will guide you through registration or login. Once logged in, you can add, view, and (in future versions) update or delete your workout records.
+To-Do
+
+    - Develop a user-friendly graphical user interface (GUI) for a more intuitive experience.
+    
+    - Explore options for hosting the database online for remote access and collaboration (consider security implications).
+    
+    - Create a single executable file (.exe) for easy distribution once the GUI is implemented.
+

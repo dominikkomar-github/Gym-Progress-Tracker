@@ -1,54 +1,69 @@
 from connect import *
-from user_management import register_user, login_user  # Import functions
+from user_management import register_user, login_user
+from workouts import add_workout, view_workouts
 
 def main():
-    """Manages the main menu for the gym progress app."""
+    """Manages the main menu of the Gym Progress App."""
 
-    # Connect to the database
-    conn = sql.connect("Gym Progress App/Gym-Progress-Tracker/gymDB.db")  # Replace with your desired database name
+    print("Welcome to the Gym Progress App!")
 
-    logged_in_user = None
     while True:
-        print("\nMain Menu:")
-        if not logged_in_user:
-            print("1. Register")
-            print("2. Login")
-            print("3. Exit")
+        choice = input("""
+        1. Register
+        2. Login
+        3. Exit
+        """)
 
-            choice = input("Enter your choice: ")
+        if choice == '1':
+            # Registration functionality
+            conn = db_access()  # Establish database connection
+            register_user(conn)  # Call register_user function
+            conn.close()  # Close the connection after registration
 
-            if choice == '1':
-                register_user(conn)  # Call register_user function
-            elif choice == '2':
-                logged_in_user = login_user(conn)  # Call login_user and store user ID
-            elif choice == '3':
-                print("Exiting...")
-                break
+        elif choice == '2':
+            # Login functionality
+            conn = db_access()  # Establish database connection
+            cursor = conn.cursor()  # Create a cursor object
+            logged_in_user = login_user(cursor)  # Call login_user and pass cursor
+
+            if logged_in_user:
+                # User successfully logged in
+                while True:
+                    sub_choice = input("""
+                    Logged in as User ID: {}
+                    1. View Workouts
+                    2. Add Workout
+                    3. Update Workout
+                    4. Delete Workout
+                    5. Logout
+                    """.format(logged_in_user))
+
+                    if sub_choice == '1':
+                        view_workouts(conn, logged_in_user)  # View workouts
+
+                    elif sub_choice == '2':
+                        add_workout(conn, logged_in_user)  # Add workout
+
+                    elif sub_choice == '3':
+                        print("Logged out successfully!")
+                        break  # Exit inner loop (logout)
+
+                    else:
+                        print("Invalid choice. Please try again.")
+
             else:
-                print("Invalid choice. Please try again.")
+                print("Login failed. Please try again.")
+
+            cursor.close()  # Close the cursor after login flow
+            conn.close()  # Close the connection after login flow
+
+        elif choice == '3':
+            print("Exiting the Gym Progress App. Goodbye!")
+            break
 
         else:
-            # User is logged in, display options for workouts
-            print("\nLogged in user:", logged_in_user)  # Show logged-in user ID (optional)
-            print("1. Add Workout")
-            print("2. View Workouts")
-            print("3. Logout")
+            print("Invalid choice. Please try again.")
 
-            choice = input("Enter your choice: ")
-
-            if choice == '1':
-                # Add workout functionality (assuming in a separate file)
-                print("** Feature not yet implemented. Coming soon!**")
-            elif choice == '2':
-                # View workout functionality (assuming in a separate file)
-                print("** Feature not yet implemented. Coming soon!**")
-            elif choice == '3':
-                logged_in_user = None  # Reset logged_in_user for login again
-                print("Logged out.")
-            else:
-                print("Invalid choice. Please try again.")
-
-    conn.close()  # Close the database connection
 
 if __name__ == "__main__":
     main()

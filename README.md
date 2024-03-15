@@ -12,7 +12,7 @@ Features
     Workout Management:
         - Add workouts with exercise names, repetitions, and weights
         - View your complete workout history
-        - (Future) Update and delete existing workouts (planned for future implementation)
+        - Update and delete existing workouts
         
     Security:
         - Strong password hashing with bcrypt for user protection

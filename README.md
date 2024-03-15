@@ -1,5 +1,6 @@
 # Gym Progress Tracker - Python & SQLite Fitness App
 
+Try it here on Replit: https://replit.com/@dominikkomar-gi/Gym-Progress-Tracker
 
 This is a Python application designed to help you track your gym progress and visualize your workout achievements. It utilizes SQLite for local data storage and prioritizes user privacy with secure password hashing using bcrypt.
 Features
@@ -15,6 +16,7 @@ Features
         
     Security:
         - Strong password hashing with bcrypt for user protection
+        - All personal workout data will be saved to your account
 
 # Getting Started
 
@@ -32,7 +34,7 @@ Dependencies
 Use code with caution.
 Run the Application
 
-    -Download or clone the repository.
+    Download or clone the repository.
     
     Navigate to the project directory in your terminal.
     

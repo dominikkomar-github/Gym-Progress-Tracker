@@ -34,14 +34,12 @@ def view_workouts(conn, user_id):
 
 def delete_workout(conn, user_id):
     """Deletes a workout from the database."""
-
+    
     try:
-        # Assuming you use prepared statements
         cursor = conn.cursor()
-
         workout_id = int(input("Enter the Number of the workout to delete: "))
 
-        # Double-check query selection (assuming user_id is for filtering)
+        # Double-check query selection
         cursor.execute("SELECT exercise_name FROM Workouts WHERE workout_id = ? AND user_id = ?", (workout_id, user_id,))
         exercise_name = cursor.fetchone()  # Fetch only the exercise name
 
@@ -60,5 +58,44 @@ def delete_workout(conn, user_id):
 
     except sql.OperationalError as oe:
         print(f"Error due to: {oe}")
+        
+        
 
+def update_workout(conn, user_id):
+    """Updates an existing workout in the database."""
 
+    try:
+        cursor = conn.cursor()
+
+        workout_id = int(input("Enter the Number of the workout to update: "))
+
+        # Check if the workout exists before updating
+        cursor.execute("SELECT * FROM Workouts WHERE workout_id = ? AND user_id = ?", (workout_id, user_id,))
+        row = cursor.fetchone()
+
+        if not row:  # Check if row is empty (no record found)
+            raise ValueError(f"Workout with ID {workout_id} not found.")
+        
+        # Field choices for update (modify as needed)
+        field_choices = {
+            "1": "exercise_name",
+            "2": "repetitions",
+            "3": "weight",
+        }
+
+        choice = input(f"Update (Exercise Name, Repetitions, Weight) (1/2/3): ")
+
+        if choice in field_choices:
+            new_value = input(f"Enter new {field_choices[choice]}: ")
+            # Update query using chosen field and user ID filter
+            cursor.execute(
+                f"UPDATE Workouts SET {field_choices[choice]} = ? WHERE workout_id = ? AND user_id = ?",
+                (new_value, workout_id, user_id),
+            )
+            conn.commit()
+            print("Workout information updated successfully.")
+        else:
+            print("Invalid choice. Please try again.")
+
+    except (ValueError, sql.OperationalError) as oe:
+        print(f"Error: {oe}")

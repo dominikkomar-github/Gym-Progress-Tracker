@@ -1,24 +1,29 @@
 from connect import *
 
-def add_workout(conn, user_id):
+def add_workout(conn, user_id, date):
+    """Adds a new workout to the database."""
+
     exercise_name = input("Enter exercise name: ")
     repetitions = int(input("Enter repetitions: "))
     weight = float(input("Enter weight in KG: "))
 
+    cursor = conn.cursor()
 
-    #print(f"user_id: {user_id}, exercise_name: {exercise_name}, repetitions: {repetitions}, weight: {weight}")
-        
-    cursor = conn
-    cursor.execute("INSERT INTO Workouts (user_id, exercise_name, repetitions, weight) VALUES (?, ?, ?, ?)", (user_id, exercise_name, repetitions, weight))
+    # Insert query with date column included
+    cursor.execute(
+        "INSERT INTO Workouts (user_id, exercise_name, repetitions, weight, date) VALUES (?, ?, ?, ?, ?)",
+        (user_id, exercise_name, repetitions, weight, date),
+    )
     conn.commit()
     print("Workout added successfully!")
+
 
 
 def view_workouts(conn, user_id):
     """Views all workouts for the given user."""
 
     cursor = conn.cursor()
-    cursor.execute("SELECT workout_id, exercise_name, repetitions, weight FROM Workouts WHERE user_id = ?", (user_id,))
+    cursor.execute("SELECT date, workout_id, exercise_name, repetitions, weight FROM Workouts WHERE user_id = ?", (user_id,))
     workouts = cursor.fetchall()  # Fetch all workout data
 
     if not workouts:
@@ -27,8 +32,8 @@ def view_workouts(conn, user_id):
         print("Your Workout History:")
         for workout in workouts:
             # Access data using column names (assuming correct order)
-            workout_id, exercise_name, repetitions, weight = workout
-            print(f"Number: {workout_id} | Exercise: {exercise_name} | Repetitions: {repetitions} | Weight: {weight}")
+            date, workout_id, exercise_name, repetitions, weight = workout
+            print(f"Date: {date} | Number: {workout_id} | Exercise: {exercise_name} | Repetitions: {repetitions} | Weight: {weight}")
 
 
 
@@ -61,8 +66,8 @@ def delete_workout(conn, user_id):
         
         
 
-def update_workout(conn, user_id):
-    """Updates an existing workout in the database."""
+def update_workout(conn, user_id, date):
+    """Updates an existing workout in the database, including the date."""
 
     try:
         cursor = conn.cursor()
@@ -75,7 +80,7 @@ def update_workout(conn, user_id):
 
         if not row:  # Check if row is empty (no record found)
             raise ValueError(f"Workout with ID {workout_id} not found.")
-        
+
         # Field choices for update (modify as needed)
         field_choices = {
             "1": "exercise_name",
@@ -87,10 +92,10 @@ def update_workout(conn, user_id):
 
         if choice in field_choices:
             new_value = input(f"Enter new {field_choices[choice]}: ")
-            # Update query using chosen field and user ID filter
+            # Update query using chosen field, user ID filter, and date
             cursor.execute(
-                f"UPDATE Workouts SET {field_choices[choice]} = ? WHERE workout_id = ? AND user_id = ?",
-                (new_value, workout_id, user_id),
+                f"UPDATE Workouts SET {field_choices[choice]} = ?, date = ? WHERE workout_id = ? AND user_id = ?",
+                (new_value, date, workout_id, user_id),
             )
             conn.commit()
             print("Workout information updated successfully.")

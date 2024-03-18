@@ -1,4 +1,5 @@
 from connect import *
+import datetime
 from user_management import register_user, login_user
 from workout_management import add_workout, view_workouts, delete_workout, update_workout
 
@@ -42,10 +43,13 @@ def main():
                         view_workouts(conn, logged_in_user)  # View workouts
 
                     elif sub_choice == '2':
-                        add_workout(conn, logged_in_user)  # Add workout
+                        todays_date = datetime.date.today()  # Get current date
+                        # Call the add_workout function with date
+                        add_workout(conn, logged_in_user, todays_date)
                         
                     elif sub_choice == '3':
-                        update_workout(conn, logged_in_user)  # Update workout
+                        todays_date = datetime.date.today()
+                        update_workout(conn, logged_in_user, todays_date)  # Update workout
                     
                     elif sub_choice == '4':
                         delete_workout(conn, logged_in_user)  # Delete workout
